@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="styles/login.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 </head>
 <body>
     <div class="container">
@@ -38,12 +42,22 @@
             </form>
             
         </div>
+        <div class="or">
+            <span></span>
+            <h3>Or</h3>
+            <span></span>
+        </div>
+        <button onclick="login()"><i class="fa-brands fa-google"> </i>Log in with Google</i></button>
         <div class="more">
             <a href="register.html">Create a new account</a>
         </div>
         
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/13.0.0/firebase-app-compat.min.js" integrity="sha512-dkiXLygJu7McpOzcre6f9o/EKqvkP4uZNw6AWJ1uo+JHnyp8E2lnr+tx65hyiyh5IbXPaK9w0yb4xiG6gcgAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/13.0.0/firebase-auth-compat.js" integrity="sha512-XO67lLn55GeMh9xODuYNEUk0PgFjwGy2Pyn73VqI+QDnXV1kFaWqcr7xEUnClKnLS5/uswteKsJapvEQHhzWjg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/13.0.0/firebase-firestore-compat.min.js" integrity="sha512-SS8D9chfi5ZtOLj0wYK6dOKILqF4n8aRz1p+7rqo/iUP6wBPjAGyByeVUfgXbb0ieDF82P6TfcDrWr1U2Zt3GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/13.0.0/firebase-storage-compat.min.js" integrity="sha512-XIbJNbySm+F4J/gGFGuxt6jdzvLYe0ILywvxTuSCFFKxT5UeY6Al++G3hysSmKaEX+26IaUUNtCly2C6DtqMZg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="scripts/firebase-config.js"></script>
     <script src="scripts/login.js"></script>
 </body>
 </html>

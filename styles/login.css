@@ -86,7 +86,7 @@ label{
     height: 16px;
 }
 
-.form-section button {
+button {
     margin-top: 20px;
     border-radius: 8px;
     background-color: white;
@@ -123,3 +123,22 @@ a:hover{
     border-radius: 8px;
 }
 
+.or {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+    gap: 16px;
+}
+.or span {
+    width: 100%;
+    min-height: 1px;
+    background-color: white; /* Change to match your border/line color */
+}
+.or h3{
+    color: white;
+}
+.fa-google{
+    margin-right: 12px;
+}
