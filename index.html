@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+</head>
+<body>
+    <div class="search-part">
+        <div class="upper">
+            <a href="index.html" style="text-decoration: none;"><div class="logo" style="font-size: 32px; font-weight: 600;">
+                <span style="color:lime">Gaia</span>
+                <span style="color:rgb(129, 0, 146)">Library</span>
+            </div>
+        </a>
+            <form id="form">
+                <input type="text" name="category" placeholder="Search Categories" class="extra-search cate-xsearch">
+                <input type="text" name="artist" placeholder="Search Artists" class="extra-search artist-xsearch">
+                <input type="text" name="search" value="" placeholder="Search Books/Categories/Artists" class="name-search">
+            </form>
+
+            <div class="user">
+                <button class="avatar" onclick="avaclick()">Z</button>
+                <div class="user-utils">
+                    <div class="user-basic-info"><p>----------------------</p></div>
+                    <a href="favourites.html">
+                        <div><i class="fa-regular fa-heart"></i><p>Favourites</p></div>
+                    </a>
+                    <a href="bookmarks.html">
+                        <div><i class="fa-regular fa-bookmark"></i><p>Bookmarks</p></div>
+                    </a>
+                    <a href="recently.html">
+                        <div><i class="fa-solid fa-clock-rotate-left"></i><p>Recently</p></div>
+                    </a>
+                    <button class="signout" onclick="signout()">
+                        <div><i class="fa-solid fa-arrow-right-from-bracket"></i><p>Sign Out</p></div>
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+        <div class="keywords">
+            <h2 id="book-cate">Categories</h2>
+            <h2 id="book-name">Name</h2>
+            <h2 id="book-artist">Artists</h2>
+        </div>
+    </div>
+    <main>
+        <div class="prev nav">
+            <div class="navi naviPrev" data-name="Previous">
+                <i class="fa-solid fa-arrow-down"></i>
+            </div>
+        </div>
+        <div class="shelf">
+            <h4 class="shelf-count">Shelf 1</h4>
+            <div class="bookshelf">
+                <div class="popular"></div>
+            </div>
+        </div>
+        
+        <div class="next nav">
+            <div class="navi naviNext" data-name="Next">
+                <i class="fa-solid fa-arrow-up"></i>
+            </div>
+        </div>
+    </main>
+    <div class="shelf-nav">
+        <form id="form-shelf">
+        <input class="shelf-page-search shelf-nav-util" value="" placeholder="Page...">
+        </form>
+    </div>
+    <script src="scripts/index.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,125 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: black;
+    padding: 60px;
+    max-width: 500px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 16px;
+    border: none;
+    color: black;
+    background-color: white;
+    outline: none;
+    border-radius: 8px;
+}
+.form-group input:hover {
+    background-color: rgb(175, 175, 175);
+}
+
+.form-group input:focus {
+    background-color: white;
+    outline: 3px solid rgb(175, 175, 175);
+}
+
+.form-group input::placeholder {
+    color: black;
+}
+.more{
+    display: flex;
+    justify-content: space-between;
+}
+label{
+    color: white;
+    display: flex;
+    font-weight: 600;
+    gap: 8px;
+}
+.rememberMe{
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+.rememberMe:hover{
+    background-color: rgb(44, 44, 44);
+    box-shadow: 0 0 0 4px rgb(44, 44, 44);
+    cursor: pointer;
+    /*  box-shadow:
+        If only two values are given, they are interpreted as <offset-x> and <offset-y> values.
+        If a third value is given, it is interpreted as a <blur-radius>.
+        If a fourth value is given, it is interpreted as a <spread-radius>. */
+}
+#remember{
+    width: 16px;
+    height: 16px;
+}
+
+.form-section button {
+    margin-top: 20px;
+    border-radius: 8px;
+    background-color: white;
+    color: black;
+    padding: 16px 40px;
+    width: 100%;
+    font-size: 24px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(44, 44, 44);
+    color: white;
+}
+
+.more {
+    margin-top: 10px;
+}
+
+a{
+    color: white;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+#error{
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 8px;
+}
+
