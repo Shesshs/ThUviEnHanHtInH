@@ -14,7 +14,7 @@
     <div class="container">
         <div class="form-section">
             <h1>Login</h1>
-            <div id="error"></div>
+            <div id="error">Incorrect Email or Password</div>
             <form id="loginForm" novalidate>
                 <div class="form-group">
                     <input 
@@ -38,7 +38,7 @@
                     <a href="">Forgot password?</a>
                 </div>
                 
-                <button type="submit">Login</button>
+                <button type="button" onclick="emailLogin()">Login</button>
             </form>
             
         </div>
