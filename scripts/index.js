@@ -11,7 +11,6 @@ let searchText = "";
 let categoryText = "";
 let artistText = "";
 let controller = undefined;
-const account = JSON.parse(localStorage.getItem("loggedAccount"));
 
 let printBooks = "";
 for(let i = 0;i<4;i++){
@@ -392,16 +391,8 @@ form.addEventListener("focusout", function(event) {
 //#region headers/user
 
 //----------------avatar...
-const uid = JSON.parse(localStorage.getItem("uid")) || [];
-console.log(uid);
 
-const avatar = document.getElementsByClassName("avatar")[0];
 const utils = document.getElementsByClassName("user-utils")[0];
-const nameUser = document.getElementsByClassName("user-basic-info")[0];
-console.log(avatar);
-avatar.style.backgroundColor = `#${account.uid}`;
-avatar.textContent = account.username[0]
-nameUser.textContent = account.username;
 
 function avaclick() {
     utils.classList.toggle("clicked");

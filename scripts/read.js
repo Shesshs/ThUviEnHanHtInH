@@ -1,6 +1,21 @@
 const bookID = Number(
     new URLSearchParams(window.location.search).get("id")
 );
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDal2XiUTjPmuEo4EZxqIANpKnEBw4-nrA",
+    authDomain: "gaia-libwary.firebaseapp.com",
+    projectId: "gaia-libwary",
+    storageBucket: "gaia-libwary.firebasestorage.app",
+    messagingSenderId: "400779014736",
+    appId: "1:400779014736:web:34ae236a6f83d9f4cf9755",
+    measurementId: "G-662JK7YLXW"
+  };
+// Kết nối tới Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const uid = JSON.parse(localStorage.getItem("uid")) || [];
+
 let thisbook = [];
 const account = JSON.parse(localStorage.getItem("loggedAccount"));
 const dataAccount = JSON.parse(localStorage.getItem("accounts"));

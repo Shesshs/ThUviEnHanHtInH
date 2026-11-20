@@ -41,6 +41,7 @@ function emailSignup(){
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       const user = userCredential.user;
+      localStorage.setItem("uid", JSON.stringify(user.uid));
       return user.updateProfile({ displayName: name }).then(() => {
         createUserIfNotExist(user);
       });

@@ -22,6 +22,7 @@ function emailLogin(){
     .then((userCredential) => {
       const user = userCredential.user;
       console.log(user);
+      localStorage.setItem("uid", JSON.stringify(user.uid));
       window.location.href = "index.html";
     })
     .catch((error) => {
