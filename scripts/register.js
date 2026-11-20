@@ -1,18 +1,65 @@
-const form = document.getElementById("registerForm");
-let uid = 0;
-form.addEventListener("submit", function (event) {
-    const username = document.getElementById("username");
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    event.preventDefault();
+function emailSignup(){
+  const name = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-    
+  const nameError = document.querySelector("#usernameError");
+  const emailError = document.querySelector("#emailError");
+  const passError = document.querySelector("#passwordError");
 
-    // if (accounts.some(account => account.email === email.value)) {
-    //     const error = document.querySelector("#emailError");
-    //     error.textContent = "*Email exists";
-
-    // }
-
-    
-});
+  let allDone = true;
+  //#region checking register
+  if (name.trim().length < 5) {
+    nameError.textContent = "*Minimum username length is 5 characters";
+    allDone = false;
+  }
+  if(!email.includes("@") || !email.includes(".")){
+    emailError.textContent = "*Not an email";
+    allDone = false;
+  }
+  if(email.includes("@gmail.com")){
+    emailError.textContent = "*Please use Sign in with Google";
+    allDone = false;
+  }
+  if (password.trim().length < 8){
+    passError.textContent = "*Minimum password length is 8 characters";
+    allDone = false;
+  }
+  if (password.trim().length > 20){
+    passError.textContent = "*Maximum password length is 20 characters";
+    allDone = false;
+  }
+  if (!allDone){
+    setTimeout(() => {
+      nameError.textContent = "";
+      emailError.textContent = "";
+      passError.textContent = "";
+    }, 1500);
+    return;
+  }
+  //#endregion
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      return user.updateProfile({ displayName: name }).then(() => {
+        createUserIfNotExist(user);
+      });
+    })
+    .catch((error) => {
+      if (error.code === "auth/invalid-email") {
+        emailError.textContent = "*Not an email";
+        setTimeout(() => {
+          emailError.textContent = "";
+        }, 1500);
+      }
+      else if (error.code === "auth/email-already-in-use"){
+        emailError.textContent = "*Email already in use";
+        setTimeout(() => {
+          emailError.textContent = "";
+        }, 1500);
+      }
+      else{
+        console.log(error.message);
+      }
+    })
+}

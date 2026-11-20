@@ -33,6 +33,7 @@ h1 {
 
 .form-group {
     margin-bottom: 20px;
+    position: relative;
 }
 
 .form-group input {
@@ -126,7 +127,14 @@ a:hover{
     margin-bottom: 24px;
     display: none;
 }
-
+.error{
+    color: red;
+    font-size: 12px;
+    padding-top: 3px;
+    position: absolute;
+    font-weight: 600;
+    display: none;
+}
 .or {
     display: flex;
     align-items: center;

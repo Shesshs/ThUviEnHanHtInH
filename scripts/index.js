@@ -12,6 +12,18 @@ let categoryText = "";
 let artistText = "";
 let controller = undefined;
 const account = JSON.parse(localStorage.getItem("loggedAccount"));
+
+let printBooks = "";
+for(let i = 0;i<4;i++){
+    printBooks += 
+    '<div class="section"' +
+        `style="
+            grid-template-columns: repeat(${String(displayBooksNumbRow)}, auto);
+    ">` +
+    '</div>';
+    }
+document.querySelector(".popular").innerHTML = printBooks;
+
 function getNumb(_var) {
     const numbers = String(_var);
     let hei = 0;
@@ -38,6 +50,15 @@ let shelfNumb = 0;
 async function getBooks(link,pagesToFetch,searchN,searchC,searchA){
     if (controller){controller.abort()};
     controller = new AbortController();
+
+    const prevNav = document.getElementsByClassName("prev")[0]
+    notPrevAble = (shelfNumb == 0);
+    if (notPrevAble){
+        prevNav.classList.add("disabled");
+    }else{
+        prevNav.classList.remove("disabled");
+    }
+    
     let books = [];
     const startPage = shelfNumb * 2 + 1;
 
@@ -62,21 +83,14 @@ async function getBooks(link,pagesToFetch,searchN,searchC,searchA){
 
         books.push(...data.results);
         nextAble = data.next;
-        notPrevAble = (shelfNumb == 0);
+        
         const nextNav = document.getElementsByClassName("next")[0];
-        const prevNav = document.getElementsByClassName("prev")[0];
         if (!nextAble){
             
             nextNav.classList.add("disabled");
             break;
         }else{
             nextNav.classList.remove("disabled");
-        }
-        if (notPrevAble){
-            prevNav.classList.add("disabled");
-            
-        }else{
-            prevNav.classList.remove("disabled");
         }
         console.log("NEXTO+ "+ nextAble);
     }
@@ -90,7 +104,7 @@ async function getBooks(link,pagesToFetch,searchN,searchC,searchA){
 async function drawBooks(link,pagesToFetch,searchN="",searchC="",searchA=""){
     return getBooks(link,pagesToFetch,searchN,searchC,searchA)
     .then(books => {
-        let printBooks = "";
+        printBooks = "";
         for(let i = 0;i<sectionCount;i++){
             const startBook = i*displayBooksNumbRow;
             const sectionBook = books.slice(startBook,startBook+displayBooksNumbRow);
@@ -132,7 +146,6 @@ async function drawBooks(link,pagesToFetch,searchN="",searchC="",searchA=""){
         const bookCards = document.querySelectorAll('.book-card');
 
         bookCards.forEach(card => {
-
             card.addEventListener('mouseenter', () => {
 
                 // Get the ID from the card
@@ -379,6 +392,9 @@ form.addEventListener("focusout", function(event) {
 //#region headers/user
 
 //----------------avatar...
+const uid = JSON.parse(localStorage.getItem("uid")) || [];
+console.log(uid);
+
 const avatar = document.getElementsByClassName("avatar")[0];
 const utils = document.getElementsByClassName("user-utils")[0];
 const nameUser = document.getElementsByClassName("user-basic-info")[0];

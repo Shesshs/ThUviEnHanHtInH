@@ -36,97 +36,6 @@ function GGlogin() {
     .catch((err) => console.log(err));
 }
 
-function emailLogin(){
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const passEmError = document.getElementById("error");
-  if(!email.includes("@") || !email.includes(".") || password.trim().length < 8 || password.trim().length > 20){
-    passEmError.style.display = "block";
-    setTimeout(() => {
-      passEmError.style.display = "none"
-    }, 1000);
-    return;
-  }
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
-    })
-    .catch((error) => {
-      if (error.code === "auth/invalid-credential"){
-        passEmError.style.display = "block";
-        setTimeout(() => {
-          passEmError.style.display = "none"
-        }, 1000);
-        return;
-      }
-      else{
-        console.log(error.message);
-      }
-    });
-}
-
-function emailSignup(){
-  const name = document.getElementById("username").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  const nameError = document.querySelector("#usernameError");
-  const emailError = document.querySelector("#emailError");
-  const passError = document.querySelector("#passwordError");
-
-  let allDone = true;
-  //#region checking register
-  if (name.trim().length < 5) {
-    nameError.textContent = "*Minimum username length is 5 characters";
-    allDone = false;
-  }
-  if(!email.includes("@") || !email.includes(".")){
-    emailError.textContent = "*Not an email";
-    allDone = false;
-  }
-  if (password.trim().length < 8){
-    passError.textContent = "*Minimum password length is 8 characters";
-    allDone = false;
-  }
-  if (password.trim().length > 20){
-    passError.textContent = "*Maximum password length is 20 characters";
-    allDone = false;
-  }
-  if (!allDone){
-    setTimeout(() => {
-      nameError.textContent = "";
-      emailError.textContent = "";
-      passError.textContent = "";
-    }, 2500);
-    return;
-  }
-  //#endregion
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      return user.updateProfile({ displayName: name }).then(() => {
-        createUserIfNotExist(user, name);
-      });
-    })
-    .catch((error) => {
-      if (error.code === "auth/invalid-email") {
-        emailError.textContent = "*Not an email";
-        setTimeout(() => {
-          emailError.textContent = "";
-        }, 1500);
-      }
-      else if (error.code === "auth/email-already-in-use"){
-        emailError.textContent = "*Email already in use";
-        setTimeout(() => {
-          emailError.textContent = "";
-        }, 1500);
-      }
-      else{
-        console.log(error.message);
-      }
-    })
-}
 // Hàm đăng xuất
 function logout() {
   firebase.auth().signOut()
@@ -145,6 +54,7 @@ function createUserIfNotExist(user) {
         email: user.email,
         name: user.displayName || "Anonymous",
         photoURL: user.photoURL || "",
+        
       }).then(() => {
         window.location.href = "index.html";
         listenUser(user.uid);
@@ -172,27 +82,26 @@ function listenUser(uid) {
   });
 }
 
-
-// 6. THEO DÕI TRẠNG THÁI ĐĂNG NHẬP
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     // 1. ĐÃ ĐĂNG NHẬP
     console.log("Đã đăng nhập:", user.uid);
+    localStorage.setItem("uid", JSON.stringify(user.uid));
     logged = true;
-
-    // 🌟 Hiển thị email ngay (không chờ Firestore)
-    document.getElementById("email").innerText = user.email;
 
     // 🌟 Lắng nghe dữ liệu realtime từ Firestore
     listenUser(user.uid);
 
   } else {
     // 2. CHƯA ĐĂNG NHẬP
+    localStorage.removeItem("uid");
     logged = false;
     console.log("Chưa đăng nhập");
   }
 });
-
+function getUser(){
+  return currentUser;
+}
 // // 7. Nạp tiền
 // function deposit(uid) {
 //   const user = firebase.auth().currentUser;
