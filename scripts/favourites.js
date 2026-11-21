@@ -11,7 +11,21 @@ let searchText = "";
 let categoryText = "";
 let artistText = "";
 let controller = undefined;
-const account = JSON.parse(localStorage.getItem("loggedAccount"));
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDal2XiUTjPmuEo4EZxqIANpKnEBw4-nrA",
+    authDomain: "gaia-libwary.firebaseapp.com",
+    projectId: "gaia-libwary",
+    storageBucket: "gaia-libwary.firebasestorage.app",
+    messagingSenderId: "400779014736",
+    appId: "1:400779014736:web:34ae236a6f83d9f4cf9755",
+    measurementId: "G-662JK7YLXW"
+  };
+
+// Kết nối tới Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const uid = JSON.parse(localStorage.getItem("uid")) || [];
 
 function getNumb(_var) {
     const numbers = String(_var);
@@ -36,7 +50,30 @@ function getHex(_var) {
 
 //#region get/draw books
 let shelfNumb = 0;
+async function getFavs() {
+    try {
+        const doc = await db.collection("favourites")
+            .doc(uid)
+            .collection("items")
+            .get();
 
+        const favs = doc.docs.map(doc => doc.id);
+
+        for (const id of favs) {
+            const res = await fetch(`https://gutendex.com/books/${id}`);
+            const book = await res.json();
+
+            console.log(book);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+getFavs().then((items) => {
+  console.log("Favourite items:", items);
+  // Each item has { bookId, timeAdd, ... }
+});
 function drawBooks(){
     const books = account.favourites;
         let printBooks = "";

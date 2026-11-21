@@ -22,7 +22,31 @@ const db = firebase.firestore();
 const provider = new firebase.auth.GoogleAuthProvider();
 const uid = JSON.parse(localStorage.getItem("uid")) || [];
 // Hàm đăng nhập
+async function getFavs() {
+    try {
+        const doc = await db.collection("favourites")
+            .doc(uid)
+            .collection("items")
+            .get();
 
+        const favs = doc.docs.map(doc => doc.id);
+
+        for (const id of favs) {
+            console.log("PHET");
+            const res = await fetch(`https://gutendex.com/books/${id}`);
+            const book = await res.json();
+
+            console.log(book);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+getFavs().then((items) => {
+  console.log("Favourite items:", items);
+  // Each item has { bookId, timeAdd, ... }
+});
 function GGlogin() {
   firebase.auth().signInWithPopup(provider)
     .then((result) => {
@@ -49,7 +73,6 @@ function logout() {
 // 3. TẠO USER TRONG DATABASE (Firestore)
 function createUserIfNotExist(user) {
   const ref = db.collection("users").doc(user.uid);
-  const fav = db.collection("favourites").doc(user.uid);
   ref.get().then((doc) => {
     if (!doc.exists) {
       ref.set({
@@ -65,17 +88,19 @@ function createUserIfNotExist(user) {
       listenUser(user.uid);
     }
   });
+}
 
-  fav.get().then((doc) => {
+function favourite(bookid) {
+  const ref = db.collection("favourites").doc(uid).collection("items").doc(bookid);
+  ref.get().then((doc) => {
     if (!doc.exists) {
-      fav.set({
-        uid: user.uid,
+      ref.set({
+        timeAdd: firebase.firestore.FieldValue.serverTimestamp()
       }).then(() => {
-        window.location.href = "index.html";
-        listenUser(user.uid);
+        listenUser(uid);
       });
     } else {
-      listenUser(user.uid);
+      listenUser(uid);
     }
   });
 }
