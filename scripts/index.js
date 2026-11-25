@@ -391,14 +391,31 @@ form.addEventListener("focusout", function(event) {
 //#region headers/user
 
 //----------------avatar...
-
 const utils = document.getElementsByClassName("user-utils")[0];
 
 function avaclick() {
     utils.classList.toggle("clicked");
 };
-function signout(){
-    account.remember = false;
-    localStorage.setItem("loggedAccount", JSON.stringify(account));
-    window.location.href = "login.html";
+
+async function getUser(uid) {
+  try {
+    const doc = await db.collection("users").doc(uid).get();
+    const user = {
+      id: doc.id,
+      ...doc.data(),
+    };
+
+    console.log("Fetched user:", user);
+    return user;
+  } catch (error) {
+    console.error(error);
+  }
 }
+const avatar = document.getElementsByClassName("avatar")[0];
+const nameUser = document.getElementsByClassName("user-basic-info")[0];
+
+getUser(uid).then((account) => {
+  avatar.textContent = account.name[0];
+  nameUser.textContent = account.name;
+});
+

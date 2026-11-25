@@ -12,21 +12,6 @@ let categoryText = "";
 let artistText = "";
 let controller = undefined;
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDal2XiUTjPmuEo4EZxqIANpKnEBw4-nrA",
-    authDomain: "gaia-libwary.firebaseapp.com",
-    projectId: "gaia-libwary",
-    storageBucket: "gaia-libwary.firebasestorage.app",
-    messagingSenderId: "400779014736",
-    appId: "1:400779014736:web:34ae236a6f83d9f4cf9755",
-    measurementId: "G-662JK7YLXW"
-  };
-
-// Kết nối tới Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const uid = JSON.parse(localStorage.getItem("uid")) || [];
-
 function getNumb(_var) {
     const numbers = String(_var);
     let hei = 0;
@@ -50,6 +35,7 @@ function getHex(_var) {
 
 //#region get/draw books
 let shelfNumb = 0;
+let books = [];
 async function getFavs() {
     try {
         const doc = await db.collection("favourites")
@@ -60,8 +46,12 @@ async function getFavs() {
         const favs = doc.docs.map(doc => doc.id);
 
         for (const id of favs) {
-            const res = await fetch(`https://gutendex.com/books/${id}`);
+            console.log("fetching:"+id)
+            const res = await fetch(`https://gutendex.com/books/${id}/`);
             const book = await res.json();
+
+            books.push(book);
+            drawBooks();
 
             console.log(book);
         }
@@ -70,12 +60,8 @@ async function getFavs() {
         console.error(error);
     }
 }
-getFavs().then((items) => {
-  console.log("Favourite items:", items);
-  // Each item has { bookId, timeAdd, ... }
-});
+getFavs();
 function drawBooks(){
-    const books = account.favourites;
         let printBooks = "";
         for(let i = 0;i<sectionCount;i++){
             const startBook = shelfNumb * totalBookShow + i * displayBooksNumbRow;
@@ -235,7 +221,7 @@ async function shelfIn() {
 
 const nextNav = document.getElementsByClassName("next")[0];
 const prevNav = document.getElementsByClassName("prev")[0];
-const max = Math.ceil((account.favourites.length)/totalBookShow)-1;
+const max = Math.ceil((books.length)/totalBookShow)-1;
 function checknav(){
 
     if (shelfNumb <= 0){

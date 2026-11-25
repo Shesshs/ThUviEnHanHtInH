@@ -31,7 +31,7 @@ function categoring(){
     }
 }
 
-fetch("https://gutendex.com/books/" + bookID)
+fetch("https://gutendex.com/books/" + bookID+"/")
     .then(res => res.json())
     .then(book => {
                 thisbook = book;

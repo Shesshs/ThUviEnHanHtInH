@@ -11,7 +11,6 @@ let searchText = "";
 let categoryText = "";
 let artistText = "";
 let controller = undefined;
-const account = JSON.parse(localStorage.getItem("loggedAccount"));
 
 function getNumb(_var) {
     const numbers = String(_var);
@@ -36,9 +35,34 @@ function getHex(_var) {
 
 //#region get/draw books
 let shelfNumb = 0;
+let books = [];
 
+async function getMarks() {
+    try {
+        const doc = await db.collection("bookmarks")
+            .doc(uid)
+            .collection("items")
+            .get();
+
+        const marks = doc.docs.map(doc => doc.id);
+
+        for (const id of marks) {
+            console.log("fetching:"+id)
+            const res = await fetch(`https://gutendex.com/books/${id}/`);
+            const book = await res.json();
+
+            books.push(book);
+            drawBooks();
+
+            console.log(book);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+getMarks()
 function drawBooks(){
-    const books = account.bookmarks;
         let printBooks = "";
         for(let i = 0;i<sectionCount;i++){
             const startBook = shelfNumb * totalBookShow + i * displayBooksNumbRow;
@@ -198,7 +222,7 @@ async function shelfIn() {
 
 const nextNav = document.getElementsByClassName("next")[0];
 const prevNav = document.getElementsByClassName("prev")[0];
-const max = Math.ceil((account.bookmarks.length)/totalBookShow)-1;
+const max = Math.ceil((books.length)/totalBookShow)-1;
 function checknav(){
 
     if (shelfNumb <= 0){

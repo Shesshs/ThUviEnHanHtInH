@@ -22,31 +22,7 @@ const db = firebase.firestore();
 const provider = new firebase.auth.GoogleAuthProvider();
 const uid = JSON.parse(localStorage.getItem("uid")) || [];
 // Hàm đăng nhập
-async function getFavs() {
-    try {
-        const doc = await db.collection("favourites")
-            .doc(uid)
-            .collection("items")
-            .get();
 
-        const favs = doc.docs.map(doc => doc.id);
-
-        for (const id of favs) {
-            console.log("PHET");
-            const res = await fetch(`https://gutendex.com/books/${id}`);
-            const book = await res.json();
-
-            console.log(book);
-        }
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-getFavs().then((items) => {
-  console.log("Favourite items:", items);
-  // Each item has { bookId, timeAdd, ... }
-});
 function GGlogin() {
   firebase.auth().signInWithPopup(provider)
     .then((result) => {
@@ -65,7 +41,7 @@ function GGlogin() {
 function logout() {
   firebase.auth().signOut()
     .then(() => {
-
+      window.location.href = "login.html";
     })
     .catch((err) => console.log(err));
 }
@@ -90,20 +66,7 @@ function createUserIfNotExist(user) {
   });
 }
 
-function favourite(bookid) {
-  const ref = db.collection("favourites").doc(uid).collection("items").doc(bookid);
-  ref.get().then((doc) => {
-    if (!doc.exists) {
-      ref.set({
-        timeAdd: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        listenUser(uid);
-      });
-    } else {
-      listenUser(uid);
-    }
-  });
-}
+
 
 // 4. LẤY DỮ LIỆU USER (REALTIME)
 // Biến để lưu listener (tránh bị lặp)
@@ -135,30 +98,13 @@ firebase.auth().onAuthStateChanged((user) => {
     localStorage.removeItem("uid");
     logged = false;
     console.log("Chưa đăng nhập");
+    if (!window.location.pathname.endsWith('login.html')) {
+      window.location.href = "login.html";
+    }
   }
 });
 
-async function getUser(uid) {
-  try {
-    const doc = await db.collection("users").doc(uid).get();
-    const user = {
-      id: doc.id,
-      ...doc.data(),
-    };
 
-    console.log("Fetched user:", user);
-    return user;
-  } catch (error) {
-    console.error(error);
-  }
-}
-const avatar = document.getElementsByClassName("avatar")[0];
-const nameUser = document.getElementsByClassName("user-basic-info")[0];
-
-getUser(uid).then((account) => {
-  avatar.textContent = account.name[0];
-  nameUser.textContent = account.name;
-});
 // // 7. Nạp tiền
 // function deposit(uid) {
 //   const user = firebase.auth().currentUser;
