@@ -30,26 +30,6 @@ function recent() {
     });
 }
 recent();
-// function addHistory(thisbook){
-//     const data = dataAccount.find(acc => acc.email === account.email);
-    
-//     const index = data.recently.findIndex(
-//         book => book.id === thisbook.id
-//     );
-
-//     if (index !== -1) {
-//         data.recently.splice(index, 1);
-//         data.recently.unshift(thisbook);
-//     } else {
-//         data.recently.unshift(thisbook);
-//         data.recently.splice(15,1)
-//     }
-
-//     localStorage.setItem("accounts", JSON.stringify(dataAccount));
-
-//     account.recently = data.recently;
-//     localStorage.setItem("loggedAccount", JSON.stringify(account));
-// }
 const favRef = db.collection("favourites").doc(uid).collection("items").doc(bookID);
 const markRef = db.collection("bookmarks").doc(uid).collection("items").doc(bookID);
 function favourite() {
@@ -101,10 +81,6 @@ fetch("https://gutendex.com/books/" + bookID)
     .then(res => res.json())
     .then(found => {
         thisbook = found;
-        // if (data.bookmarks.some(book => book.id === thisbook.id)) {
-        //     bookmarkButton.classList.add("anim");
-        // }
-        
         const readerURL =
             found.formats["text/html"] ||
             found.formats["text/plain"] ||
@@ -116,24 +92,42 @@ fetch("https://gutendex.com/books/" + bookID)
         console.log("Reader:", readerURL);
     });
 
-// function bookmark(){
-//     const data = dataAccount.find(acc => acc.email === account.email);
-//     bookmarkButton.classList.toggle("anim");
-//     const index = data.bookmarks.findIndex(
-//         book => book.id === thisbook.id
-//     );
-
-//     if (index !== -1) {
-//         data.bookmarks.splice(index, 1);
-//     } else {
-//         data.bookmarks.push(thisbook);
-//     }
-
-//     localStorage.setItem("accounts", JSON.stringify(dataAccount));
-
-//     account.bookmarks = data.bookmarks;
-//     localStorage.setItem("loggedAccount", JSON.stringify(account));
-// }
 function back(){
     window.location.href = "book-info.html?id="+bookID;
+}
+const ta = document.querySelector('textarea');
+const cmtButtons = document.getElementsByClassName('user-comment-buttons')[0];
+
+ta.addEventListener('input', () => {
+    ta.style.height = 'auto';                 // reset first so it can shrink too
+    cmtButtons.style.display = "flex"
+    ta.style.height = ta.scrollHeight + 'px'; // then fit to content
+    if (ta.value === '') {
+        cmtButtons.style.display = 'none';
+    }
+});
+ta.addEventListener('blur', () => {
+    if (ta.scrollHeight > 37){
+        ta.style.width = "75vw"
+    }
+});
+
+function clearText(){
+    ta.value = "";
+    cmtButtons.style.display = 'none';
+    ta.focus();
+}
+
+async function addComment(){
+    const text = ta.value.trim();
+    if (!text) return;
+
+    const cmtRef = db.collection("comments").doc(bookID).collection("items");
+    await cmtRef.add({
+        uid: uid,
+        text: text,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        clearText();
+    });
 }

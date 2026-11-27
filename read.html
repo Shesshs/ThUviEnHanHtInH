@@ -28,6 +28,32 @@
         </button>
         <iframe src="" frameborder="0"></iframe>
     </div>
+    <div class="comments-header">
+        <div class="comments-info">
+            <h2 id="numbers">67 Comments</h2>
+            <button id="sort">Sorting</button>
+        </div>
+        <div class="user-comment-container">
+            <button class="avatar" onclick="avaclick()">Z</button>
+            <div class="user-comment-function">
+                <textarea id="user-comment" rows="1" placeholder="Add a comment..."></textarea>
+                <div class="user-comment-buttons">
+                    <button class="clear" onclick="clearText()"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="send" onclick="addComment()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="comment-container">
+        <button class="comment-avatar" onclick="avaclick()">Z</button>
+        <div class="comment">
+            <a href="">NAME</a>
+            <p class="comment-text">
+                booky
+            </p>
+        </div>
+    </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/13.0.0/firebase-app-compat.min.js" integrity="sha512-dkiXLygJu7McpOzcre6f9o/EKqvkP4uZNw6AWJ1uo+JHnyp8E2lnr+tx65hyiyh5IbXPaK9w0yb4xiG6gcgAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/13.0.0/firebase-auth-compat.js" integrity="sha512-XO67lLn55GeMh9xODuYNEUk0PgFjwGy2Pyn73VqI+QDnXV1kFaWqcr7xEUnClKnLS5/uswteKsJapvEQHhzWjg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
